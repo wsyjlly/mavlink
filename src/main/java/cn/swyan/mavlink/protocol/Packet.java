@@ -83,7 +83,7 @@ public class Packet<T extends Message> {
 		return new Packet<>(254, -1, -1, sequence, systemId, componentId, messageId, payload, crc, new byte[0], rawBytes);
 	}
 
-	public static <T extends Message> void readV1Packet(byte[] packetBytes, Consumer<Packet<T>> consumer){
+	public static <T extends Message> void readV1Packet(byte[] packetBytes, Consumer<Packet<T>> consumer) {
 		Packet<T> packet = readV1Packet(packetBytes);
 		consumer.accept(packet);
 	}
@@ -101,7 +101,7 @@ public class Packet<T extends Message> {
 		return new Packet<>(versionMarker, -1, -1, sequence, systemId, componentId, messageId, payload, checksum, new byte[0], rawBytes);
 	}
 
-	public static <T extends Message> void readV2Packet(byte[] packetBytes, Consumer<Packet<T>> consumer){
+	public static <T extends Message> void readV2Packet(byte[] packetBytes, Consumer<Packet<T>> consumer) {
 		Packet<T> packet = readV2Packet(packetBytes);
 		consumer.accept(packet);
 	}
@@ -133,7 +133,7 @@ public class Packet<T extends Message> {
 		} else {
 			int payloadLength = packetBytes[1] & 255;
 			byte packetLengthWithoutCrc;
-			switch(packetBytes[0] & 255) {
+			switch (packetBytes[0] & 255) {
 				case 253:
 					packetLengthWithoutCrc = 10;
 					break;
@@ -268,7 +268,7 @@ public class Packet<T extends Message> {
 		if (this == o) {
 			return true;
 		} else if (o != null && this.getClass() == o.getClass()) {
-			Packet that = (Packet)o;
+			Packet that = (Packet) o;
 			if (this.versionMarker != that.versionMarker) {
 				return false;
 			} else if (this.incompatibleFlags != that.incompatibleFlags) {

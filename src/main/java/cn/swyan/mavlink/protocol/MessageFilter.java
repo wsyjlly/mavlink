@@ -14,11 +14,13 @@ import java.util.Objects;
 
 public class MessageFilter {
 	public final static HashSet<Class<? extends Message>> RECEIVED_MESSAGES;
+
 	static {
 		RECEIVED_MESSAGES = new HashSet<>();
 	}
-	public static void addFilter(Class<? extends Message> ...messageType){
-		if (Objects.nonNull(messageType)){
+
+	public static void addFilter(Class<? extends Message>... messageType) {
+		if (Objects.nonNull(messageType)) {
 			RECEIVED_MESSAGES.addAll(Arrays.asList(messageType));
 		}
 	}

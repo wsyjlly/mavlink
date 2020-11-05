@@ -34,11 +34,11 @@ public class MessageInputStream extends InputStream {
 
 	@Override
 	public synchronized int read() {
-		return (readIndex < length) ? (byteBuffer[ readIndex++ ] & 0xff) : -1;
+		return (readIndex < length) ? (byteBuffer[readIndex++] & 0xff) : -1;
 	}
 
 	public synchronized int directRead() {
-		return (readIndex < length) ? (byteBuffer[ readIndex+1 ] & 0xff) : -1;
+		return (readIndex < length) ? (byteBuffer[readIndex + 1] & 0xff) : -1;
 	}
 
 	@Override
