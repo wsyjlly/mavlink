@@ -15,7 +15,7 @@ import static cn.swyan.mavlink.protocol.Packet.readV1Packet;
  * @Date 2020.11.04 - 20:02
  **********************************/
 
-public class MessageBuffer {
+public class MessageBuilder {
 
 	public static <T extends Message> void readMessageList(byte[] packetsBytes, Class<T> messageType, Consumer<List<T>> consumer){
 		consumer.accept(readMessageList(packetsBytes,messageType));
