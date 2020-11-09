@@ -14,9 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.26 - 14:42
+ * Author YSW
+ * Description
+ * Date 2020.10.26 - 14:42
  **********************************/
 
 public class MavCmdEnumDescriptor implements MavlinkDescriptor{
@@ -105,9 +105,9 @@ public class MavCmdEnumDescriptor implements MavlinkDescriptor{
 		});
 		sb.append("\n" +
 				"/**********************************\n" +
-				" * @Author YSW\n" +
-				" * @Description\n" +
-				" * @Date "+format.format(new Date())+"\n" +
+				" * Author YSW\n" +
+				" * Description\n" +
+				" * Date "+format.format(new Date())+"\n" +
 				" **********************************/\n" +
 				"\n" +
 				"@MavlinkEnumMavCmdEntry(");
