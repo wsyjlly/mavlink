@@ -1,6 +1,6 @@
-package cn.swyan.mavlink.protocol;
+package cn.wsyjlly.mavlink.protocol;
 
-import cn.swyan.mavlink.common.Message;
+import cn.wsyjlly.mavlink.common.Message;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.annotation;
+package cn.wsyjlly.mavlink.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,14 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface MavlinkEnumEntry {
-	int value() default 0;
-	String description() default "";
+public @interface MavlinkEnumMavCmdEntryParam {
+	int index() default 0;
+	String label() default "";
+	int minValue() default 0;
+	int maxValue() default 0;
+	int increment() default 0;
+	String reserved() default "";
+	String default0() default "";
+	String units() default "";
+	Class<?> enum0() default void.class;
 }

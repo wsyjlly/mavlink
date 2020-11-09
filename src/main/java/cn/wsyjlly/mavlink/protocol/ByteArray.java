@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.protocol;
+package cn.wsyjlly.mavlink.protocol;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

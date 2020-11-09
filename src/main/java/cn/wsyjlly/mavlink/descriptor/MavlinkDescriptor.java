@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.descriptor;
+package cn.wsyjlly.mavlink.descriptor;
 
 /**********************************
  * Author YSW

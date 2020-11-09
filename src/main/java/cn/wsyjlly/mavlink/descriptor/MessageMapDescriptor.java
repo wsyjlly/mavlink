@@ -1,6 +1,6 @@
-package cn.swyan.mavlink.descriptor;
+package cn.wsyjlly.mavlink.descriptor;
 
-import cn.swyan.mavlink.protocol.util.StringModel;
+import cn.wsyjlly.mavlink.protocol.util.StringModel;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;

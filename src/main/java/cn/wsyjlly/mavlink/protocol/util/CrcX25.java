@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.protocol.util;
+package cn.wsyjlly.mavlink.protocol.util;
 
 import java.nio.charset.StandardCharsets;
 

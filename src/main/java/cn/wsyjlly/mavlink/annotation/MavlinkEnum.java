@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.annotation;
+package cn.wsyjlly.mavlink.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

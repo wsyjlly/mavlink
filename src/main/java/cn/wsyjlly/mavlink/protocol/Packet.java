@@ -1,7 +1,7 @@
-package cn.swyan.mavlink.protocol;
+package cn.wsyjlly.mavlink.protocol;
 
-import cn.swyan.mavlink.common.Message;
-import cn.swyan.mavlink.protocol.util.CrcX25;
+import cn.wsyjlly.mavlink.common.Message;
+import cn.wsyjlly.mavlink.protocol.util.CrcX25;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

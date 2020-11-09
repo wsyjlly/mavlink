@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.annotation;
+package cn.wsyjlly.mavlink.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,9 +12,13 @@ import java.lang.annotation.Target;
  **********************************/
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MavlinkMessage {
-	int id();
-	int messagePayloadLength();
+@Target(ElementType.FIELD)
+public @interface MavlinkMessageParam {
+	String mavlinkType();
+	int position();
+	int typeSize();
+	int streamLength();
+	String units() default "";
+	Class<?> enum0() default void.class;
 	String description() default "No description provided";
 }

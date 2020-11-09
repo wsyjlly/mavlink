@@ -1,14 +1,14 @@
-package cn.swyan.mavlink.protocol;
+package cn.wsyjlly.mavlink.protocol;
 
-import cn.swyan.mavlink.common.Message;
+import cn.wsyjlly.mavlink.common.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static cn.swyan.mavlink.protocol.Packet.readV1Packet;
-import static cn.swyan.mavlink.protocol.Packet.readV2Packet;
+import static cn.wsyjlly.mavlink.protocol.Packet.readV1Packet;
+import static cn.wsyjlly.mavlink.protocol.Packet.readV2Packet;
 
 /**********************************
  * Author YSW
@@ -77,7 +77,7 @@ public class MessageBuilder {
 			return null;
 		}
 		if (Objects.nonNull(messageClass)) {
-			cn.swyan.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.swyan.mavlink.annotation.MavlinkMessage.class);
+			cn.wsyjlly.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.wsyjlly.mavlink.annotation.MavlinkMessage.class);
 			if (annotation.id() == messageId) {
 				if (annotation.messagePayloadLength() == payloadLength) {
 					try {
@@ -122,7 +122,7 @@ public class MessageBuilder {
 
 	private static <T extends Message> T readMessage0(Packet<T> packet, Class<T> messageClass) {
 		if (Objects.nonNull(messageClass)) {
-			cn.swyan.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.swyan.mavlink.annotation.MavlinkMessage.class);
+			cn.wsyjlly.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.wsyjlly.mavlink.annotation.MavlinkMessage.class);
 			if (annotation.id() == packet.getMessageId()) {
 				if (annotation.messagePayloadLength() == packet.getPayload().length) {
 					try {

@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.protocol;
+package cn.wsyjlly.mavlink.protocol;
 
 import java.io.IOException;
 import java.io.InputStream;

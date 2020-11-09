@@ -1,4 +1,4 @@
-package cn.swyan.mavlink.common;
+package cn.wsyjlly.mavlink.common;
 
 /**********************************
  * Author YSW
