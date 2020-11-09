@@ -16,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.26 - 14:43
+ * Author YSW
+ * Description
+ * Date 2020.10.26 - 14:43
  **********************************/
 
 public class MessageDescriptor implements MavlinkDescriptor{
@@ -129,7 +129,7 @@ public class MessageDescriptor implements MavlinkDescriptor{
 		if (hasBigInteger.get()) {
 			sb.append("import java.math.BigInteger;\n");
 		}
-		sb.append("/**********************************\n" + " * @Author YSW\n" + " * @Description\n" + " * @Date ").append(format.format(new Date())).append("\n").append(" **********************************/\n\n");
+		sb.append("/**********************************\n" + " * Author YSW\n" + " * Description\n" + " * Date ").append(format.format(new Date())).append("\n").append(" **********************************/\n\n");
 		sb.append("@MavlinkMessage(\n" + "\t\tid = ").append(id).append(",\n").append("\t\tmessagePayloadLength = ").append(messageLength).append(",\n").append("\t\tdescription = \""+description+"\"\n").append(")\n").append("public class ").append(className).append(" implements Message {\n");
 		AtomicInteger index = new AtomicInteger();
 		params.forEach((key, value) -> {

@@ -14,9 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.26 - 14:42
+ * Author YSW
+ * Description
+ * Date 2020.10.26 - 14:42
  **********************************/
 
 public class EnumDescriptor implements MavlinkDescriptor{
@@ -80,7 +80,7 @@ public class EnumDescriptor implements MavlinkDescriptor{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd - hh:mm");
 		File file = new File(targetFolder+"\\"+className+".java");
 		sb.append("package ").append(packageName).append(";\n\n");
-		sb.append("import cn.swyan.mavlink.annotation.MavlinkEnum;\n" + "import cn.swyan.mavlink.annotation.MavlinkEnumEntry;\n" + "\n" + "/**********************************\n" + " * @Author YSW\n" + " * @Description\n" + " * @Date ").append(format.format(new Date())).append("\n").append(" *\n").append(" **********************************/\n").append("\n");
+		sb.append("import cn.swyan.mavlink.annotation.MavlinkEnum;\n" + "import cn.swyan.mavlink.annotation.MavlinkEnumEntry;\n" + "\n" + "/**********************************\n" + " * Author YSW\n" + " * Description\n" + " * Date ").append(format.format(new Date())).append("\n").append(" *\n").append(" **********************************/\n").append("\n");
 		sb.append("@MavlinkEnum(name = \"").append(name).append("\"");
 		if (Objects.nonNull(bitmask)){
 			sb.append(", bitmask = \"").append(bitmask).append("\"");

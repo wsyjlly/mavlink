@@ -1,17 +1,15 @@
 package cn.swyan.mavlink.protocol.util;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.22 - 19:51
+ * Author YSW
+ * Description
+ * Date 2020.10.22 - 19:51
  **********************************/
 
 public class ByteModel {
 
 	/**
 	 * 十进制字符串转二进制字节数组
-	 * @param hex
-	 * @return
 	 */
 	public static byte[] hexStringToBytes(String hex) {
 		if (hex.length() < 1) {
@@ -30,8 +28,6 @@ public class ByteModel {
 
 	/**
 	 * 十六进制字节间隔为空格字符串转二进制字节数组
-	 * @param hex
-	 * @return
 	 */
 	public static byte[] hexBlankStringToBytes(String hex) {
 		hex = hex.trim();
@@ -51,8 +47,6 @@ public class ByteModel {
 
 	/**
 	 * 二进制字节数组转十六进制字符串
-	 * @param b
-	 * @return
 	 */
 	public static String bytes2HexString(byte[] b) {
 		StringBuilder ret = new StringBuilder();

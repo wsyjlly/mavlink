@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.11.03 - 16:43
+ * Author YSW
+ * Description
+ * Date 2020.11.03 - 16:43
  **********************************/
 
 public class MessageInputStream extends InputStream {

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.26 - 14:39
+ * Author YSW
+ * Description
+ * Date 2020.10.26 - 14:39
  **********************************/
 
 public class MavlinkType {

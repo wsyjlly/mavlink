@@ -10,9 +10,9 @@ import java.io.File;
 import java.util.List;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.26 - 14:42
+ * Author YSW
+ * Description
+ * Date 2020.10.26 - 14:42
  **********************************/
 
 public class MessageMapDescriptor implements MavlinkDescriptor {
@@ -27,8 +27,8 @@ public class MessageMapDescriptor implements MavlinkDescriptor {
 	/**
 	 * 解析Mavlink Common.xml minimal.xml 及遵循Mavlink规范的自定义xml ,生成Java 映射类
 	 *
-	 * @param srcFile
-	 * @param targetFolder
+	 * param srcFile
+	 * param targetFolder
 	 */
 	@Override
 	public void descriptor(String srcFile, String targetFolder) {

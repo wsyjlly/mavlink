@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.10.30 - 12:34
+ * Author YSW
+ * Description
+ * Date 2020.10.30 - 12:34
  **********************************/
 
 public class MavlinkMessage {

@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author ASUS
+ * Author YSW
  */
 public class ByteArray {
 	private final byte[] bytes;

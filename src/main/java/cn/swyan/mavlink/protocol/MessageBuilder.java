@@ -8,11 +8,12 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static cn.swyan.mavlink.protocol.Packet.readV1Packet;
+import static cn.swyan.mavlink.protocol.Packet.readV2Packet;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.11.04 - 20:02
+ * Author YSW
+ * Description
+ * Date 2020.11.04 - 20:02
  **********************************/
 
 public class MessageBuilder {
@@ -36,7 +37,7 @@ public class MessageBuilder {
 				}
 				packetBytes = new byte[packageLength];
 				stream.reset();
-				T message = readMessage(stream, packageLength, packetBytes, messageType);
+				T message = readV1Message(stream, packageLength, packetBytes, messageType);
 				if (Objects.nonNull(message)) {
 					messageList.add(message);
 				}
@@ -47,7 +48,7 @@ public class MessageBuilder {
 				}
 				packetBytes = new byte[packageLength];
 				stream.reset();
-				T message = readMessage(stream, packageLength, packetBytes, messageType);
+				T message = readV2Message(stream, packageLength, packetBytes, messageType);
 				if (Objects.nonNull(message)) {
 					messageList.add(message);
 				}
@@ -62,9 +63,19 @@ public class MessageBuilder {
 
 	public static <T extends Message> T readMessage(byte[] packetBytes, Class<T> messageClass) {
 		ByteArray bytes = new ByteArray(packetBytes);
+		int versionFlag = bytes.getUnsignedInt8(0);
 		int payloadLength = bytes.getUnsignedInt8(1);
-		int messageId = bytes.getUnsignedInt8(5);
-		byte[] payload = bytes.slice(6, payloadLength);
+		int messageId;
+		byte[] payload;
+		if (versionFlag == 0xFE) {
+			messageId = bytes.getUnsignedInt8(5);
+			payload = bytes.slice(6, payloadLength);
+		} else if (versionFlag == 0xFD) {
+			messageId = bytes.getUnsignedInt24(7);
+			payload = bytes.slice(10, payloadLength);
+		} else {
+			return null;
+		}
 		if (Objects.nonNull(messageClass)) {
 			cn.swyan.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.swyan.mavlink.annotation.MavlinkMessage.class);
 			if (annotation.id() == messageId) {
@@ -93,15 +104,23 @@ public class MessageBuilder {
 		return null;
 	}
 
-	private static <T extends Message> T readMessage(MessageInputStream stream, int packageLength, byte[] packetBytes, Class<T> receiveMessage) {
+	private static <T extends Message> T readV1Message(MessageInputStream stream, int packageLength, byte[] packetBytes, Class<T> receiveMessage) {
 		if (stream.read(packetBytes, 0, packageLength) > 0) {
 			Packet<T> packet = readV1Packet(packetBytes);
-			return setMessage(packet, receiveMessage);
+			return readMessage0(packet, receiveMessage);
 		}
 		return null;
 	}
 
-	private static <T extends Message> T setMessage(Packet<T> packet, Class<T> messageClass) {
+	private static <T extends Message> T readV2Message(MessageInputStream stream, int packageLength, byte[] packetBytes, Class<T> receiveMessage) {
+		if (stream.read(packetBytes, 0, packageLength) > 0) {
+			Packet<T> packet = readV2Packet(packetBytes);
+			return readMessage0(packet, receiveMessage);
+		}
+		return null;
+	}
+
+	private static <T extends Message> T readMessage0(Packet<T> packet, Class<T> messageClass) {
 		if (Objects.nonNull(messageClass)) {
 			cn.swyan.mavlink.annotation.MavlinkMessage annotation = messageClass.getAnnotation(cn.swyan.mavlink.annotation.MavlinkMessage.class);
 			if (annotation.id() == packet.getMessageId()) {

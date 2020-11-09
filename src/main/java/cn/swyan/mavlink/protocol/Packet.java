@@ -1,7 +1,5 @@
 package cn.swyan.mavlink.protocol;
 
-//import cn.swyan.mavlink.common.MavlinkMessage;
-
 import cn.swyan.mavlink.common.Message;
 import cn.swyan.mavlink.protocol.util.CrcX25;
 
@@ -11,9 +9,9 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**********************************
- * @Author YSW
- * @Description
- * @Date 2020.11.03 - 13:36
+ * Author YSW
+ * Description
+ * Date 2020.11.03 - 13:36
  **********************************/
 
 public class Packet<T extends Message> {
@@ -88,8 +86,8 @@ public class Packet<T extends Message> {
 		consumer.accept(packet);
 	}
 
-	public static <T extends Message> Packet<T> readV1Packet(byte[] rawBytes) {
-		ByteArray bytes = new ByteArray(rawBytes);
+	public static <T extends Message> Packet<T> readV1Packet(byte[] packetBytes) {
+		ByteArray bytes = new ByteArray(packetBytes);
 		int versionMarker = bytes.getUnsignedInt8(0);
 		int payloadLength = bytes.getUnsignedInt8(1);
 		int sequence = bytes.getUnsignedInt8(2);
@@ -98,7 +96,7 @@ public class Packet<T extends Message> {
 		int messageId = bytes.getUnsignedInt8(5);
 		byte[] payload = bytes.slice(6, payloadLength);
 		int checksum = bytes.getUnsignedInt16(6 + payloadLength);
-		return new Packet<>(versionMarker, -1, -1, sequence, systemId, componentId, messageId, payload, checksum, new byte[0], rawBytes);
+		return new Packet<>(versionMarker, -1, -1, sequence, systemId, componentId, messageId, payload, checksum, new byte[0], packetBytes);
 	}
 
 	public static <T extends Message> void readV2Packet(byte[] packetBytes, Consumer<Packet<T>> consumer) {
@@ -106,8 +104,11 @@ public class Packet<T extends Message> {
 		consumer.accept(packet);
 	}
 
-	public static <T extends Message> Packet<T> readV2Packet(byte[] rawBytes) {
-		ByteArray bytes = new ByteArray(rawBytes);
+	/**
+	 * 通过字节数组解析数据包
+	 */
+	public static <T extends Message> Packet<T> readV2Packet(byte[] packetBytes) {
+		ByteArray bytes = new ByteArray(packetBytes);
 		int versionMarker = bytes.getUnsignedInt8(0);
 		int payloadLength = bytes.getUnsignedInt8(1);
 		int incompatibleFlags = bytes.getUnsignedInt8(2);
@@ -124,7 +125,7 @@ public class Packet<T extends Message> {
 		} else {
 			signature = new byte[0];
 		}
-		return new Packet<>(versionMarker, incompatibleFlags, compatibleFlags, sequence, systemId, componentId, messageId, payload, checksum, signature, rawBytes);
+		return new Packet<>(versionMarker, incompatibleFlags, compatibleFlags, sequence, systemId, componentId, messageId, payload, checksum, signature, packetBytes);
 	}
 
 	public static int generateCrc(byte[] packetBytes, int crcExtra) {

@@ -3,9 +3,9 @@ package cn.swyan.mavlink.protocol.util;
 import java.nio.charset.StandardCharsets;
 
 /**********************************
- * @Author YSW
- * @Description CrcX25
- * @Date 2020.10.28 - 14:14
+ * Author YSW
+ * Description CrcX25
+ * Date 2020.10.28 - 14:14
  **********************************/
 
 public class CrcX25 {
