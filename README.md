@@ -8,9 +8,9 @@ Java parsing toolkit for mavlink protocol
 
 ```xml
 <dependency>
-    <groupId>cn.wsyjlly</groupId>
-    <artifactId>mavlink</artifactId>
-    <version>1.0.0</version>
+  <groupId>cn.wsyjlly</groupId>
+  <artifactId>mavlink</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 

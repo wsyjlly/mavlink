@@ -104,9 +104,6 @@ public class Packet<T extends Message> {
 		consumer.accept(packet);
 	}
 
-	/**
-	 * 通过字节数组解析数据包
-	 */
 	public static <T extends Message> Packet<T> readV2Packet(byte[] packetBytes) {
 		ByteArray bytes = new ByteArray(packetBytes);
 		int versionMarker = bytes.getUnsignedInt8(0);

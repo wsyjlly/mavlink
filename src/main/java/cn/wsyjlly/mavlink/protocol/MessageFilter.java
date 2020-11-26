@@ -1,27 +1,11 @@
 package cn.wsyjlly.mavlink.protocol;
 
-import cn.wsyjlly.mavlink.common.Message;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-
 /**********************************
  * Author YSW
  * Description
- * Date 2020.11.04 - 20:01
+ * Date 2020.11.17 - 12:49
  **********************************/
 
 public class MessageFilter {
-	public final static HashSet<Class<? extends Message>> RECEIVED_MESSAGES;
-
-	static {
-		RECEIVED_MESSAGES = new HashSet<>();
-	}
-
-	public static void addFilter(Class<? extends Message>... messageType) {
-		if (Objects.nonNull(messageType)) {
-			RECEIVED_MESSAGES.addAll(Arrays.asList(messageType));
-		}
-	}
+	
 }

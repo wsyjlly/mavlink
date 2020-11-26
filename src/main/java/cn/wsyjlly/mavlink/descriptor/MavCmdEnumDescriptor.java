@@ -20,7 +20,7 @@ import java.util.*;
  **********************************/
 
 public class MavCmdEnumDescriptor implements MavlinkDescriptor{
-	private static final Logger log = Logger.getLogger(FileGenerator.class);
+	private static final Logger log = Logger.getLogger(MavCmdEnumDescriptor.class);
 
 	@Override
 	public void descriptor(String srcFile, String targetFolder) {
@@ -71,6 +71,7 @@ public class MavCmdEnumDescriptor implements MavlinkDescriptor{
 	private static void createMacCmdEnumJavaFile(HashMap<String, Object> entryMap, String targetFolder) {
 		int packageNameStartIndex = targetFolder.indexOf("src\\main\\java\\");
 		String packageName = targetFolder.substring(packageNameStartIndex + "src\\main\\java\\".length()).replaceAll("\\\\",".");
+		String parantPackageName = packageName.substring(0,packageName.lastIndexOf(".mav.cmd"));
 		Object value = entryMap.get("value");
 		Object name = entryMap.get("name");
 		Object className = entryMap.get("className");
@@ -98,10 +99,10 @@ public class MavCmdEnumDescriptor implements MavlinkDescriptor{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd - hh:mm");
 		File file = new File(targetFolder+"\\"+className+".java");
 		sb.append("package "+packageName+";\n\n");
-		sb.append("import cn.swyan.mavlink.annotation.MavlinkEnumMavCmdEntry;\n" +
-				"import cn.swyan.mavlink.annotation.MavlinkEnumMavCmdEntryParam;\n");
+		sb.append("import cn.wsyjlly.mavlink.annotation.MavlinkEnumMavCmdEntry;\n" +
+				"import cn.wsyjlly.mavlink.annotation.MavlinkEnumMavCmdEntryParam;\n");
 		enumList.forEach(enumClass->{
-			sb.append("import cn.swyan.mavlink.common.enums."+enumClass+";\n");
+			sb.append("import ").append(parantPackageName).append("."+enumClass+";\n");
 		});
 		sb.append("\n" +
 				"/**********************************\n" +

@@ -74,7 +74,7 @@ public class MessageDescriptor implements MavlinkDescriptor{
 						paramMap.put("bigHumpName", StringModel.lineToBigHump(fieldName));
 					}
 					if (Objects.nonNull(fieldText)) {
-						paramMap.put("fieldText", fieldText);
+						paramMap.put("description", fieldText);
 					}
 					fieldsMap.put(fieldName, paramMap);
 				}
@@ -90,6 +90,7 @@ public class MessageDescriptor implements MavlinkDescriptor{
 	private static void createMessageJavaFile(HashMap<String, Object> messageMap,String targetFolder) {
 		int packageNameStartIndex = targetFolder.indexOf("src\\main\\java\\");
 		String packageName = targetFolder.substring(packageNameStartIndex + "src\\main\\java\\".length()).replaceAll("\\\\",".");
+		String parantPackageName = packageName.substring(0,packageName.lastIndexOf("."));
 		StringBuffer sb = new StringBuffer();
 		Object id = messageMap.get("id");
 		Object messageLength = messageMap.get("messageLength");
@@ -97,6 +98,7 @@ public class MessageDescriptor implements MavlinkDescriptor{
 		String description = (String) messageMap.get("description");
 		description = description.replaceAll("\"", "'");
 		AtomicReference<Boolean> hasBigInteger = new AtomicReference<>(false);
+		AtomicReference<Boolean> hasArray = new AtomicReference<>(false);
 		HashMap<String, Object> params = (HashMap<String, Object>) messageMap.get("params");
 		AtomicInteger paramCount = new AtomicInteger();
 		HashSet<String> enumSet = new HashSet<>();
@@ -107,34 +109,41 @@ public class MessageDescriptor implements MavlinkDescriptor{
 			if ("BigInteger".equals(type)) {
 				hasBigInteger.set(true);
 			}
+			boolean isArray = (boolean) paramMap.get("isArray");
+			if (isArray){
+				hasArray.set(true);
+			}
 			paramMap.forEach((paramKey,paramValue)->{
 				if ("enum".equals(paramKey)){
 					  enumSet.add((String) paramValue);
 				}
 			});
 		});
-		sb.append("package "+packageName+";\n\n");
+		sb.append("package ").append(packageName).append(";\n\n");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd - hh:mm");
 		File file = new File(targetFolder+"\\" + className + ".java");
-		sb.append("import cn.swyan.mavlink.annotation.MavlinkMessage;\n" +
-				"import cn.swyan.mavlink.annotation.MavlinkMessageParam;\n" +
-				"import cn.swyan.mavlink.common.Message;\n");
+		sb.append("import cn.wsyjlly.mavlink.annotation.MavlinkMessage;\n" + "import cn.wsyjlly.mavlink.annotation.MavlinkMessageParam;\n" + "import cn.wsyjlly.mavlink.common.Message;\n");
 		for (String enum0: enumSet){
-			sb.append("import cn.swyan.mavlink.common.enums."+enum0+";\n");
+			sb.append("import ").append(parantPackageName).append(".enums.").append(enum0).append(";\n");
 		}
-		sb.append("import cn.swyan.mavlink.protocol.ByteArray;\n" +
-				"import cn.swyan.mavlink.protocol.util.ByteModel;\n");
+		sb.append("import cn.wsyjlly.mavlink.protocol.ByteArray;\n" +
+				"import cn.wsyjlly.mavlink.protocol.util.ByteModel;\n");
 		sb.append("\n" +
 				"import java.util.Objects;\n");
-		if (hasBigInteger.get()) {
+		if (hasArray.get()) {
+			sb.append("import java.util.Arrays;\n");
+		}if (hasBigInteger.get()) {
 			sb.append("import java.math.BigInteger;\n");
 		}
 		sb.append("/**********************************\n" + " * Author YSW\n" + " * Description\n" + " * Date ").append(format.format(new Date())).append("\n").append(" **********************************/\n\n");
 		sb.append("@MavlinkMessage(\n" + "\t\tid = ").append(id).append(",\n").append("\t\tmessagePayloadLength = ").append(messageLength).append(",\n").append("\t\tdescription = \""+description+"\"\n").append(")\n").append("public class ").append(className).append(" implements Message {\n");
 		AtomicInteger index = new AtomicInteger();
+		//实例字段声明
 		params.forEach((key, value) -> {
 			index.getAndIncrement();
 			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
+			boolean isArray = (boolean)paramMap.get("isArray");
+			Object arrayLength = paramMap.get("arrayLength");
 			Object type = paramMap.get("type");
 			Object mavlinkType = paramMap.get("mavlinkType");
 			Object length = paramMap.get("length");
@@ -142,11 +151,13 @@ public class MessageDescriptor implements MavlinkDescriptor{
 			Object units = paramMap.get("units");
 			Object smallHumpName = paramMap.get("smallHumpName");
 			Object enum0 = paramMap.get("enum");
+			String desc = ((String) paramMap.get("description")).replaceAll("\"", "'");
 			sb.append("\t@MavlinkMessageParam(");
 			sb.append("mavlinkType = \"").append(mavlinkType).append("\"");
 			sb.append(", position = ").append(index);
 			sb.append(", typeSize = ").append(length);
 			sb.append(", streamLength = ").append(streamLength);
+			sb.append(", description = \"").append(desc).append("\"");
 			if (Objects.nonNull(enum0)){
 				sb.append(", enum0 = ").append(enum0).append(".class");
 			}
@@ -158,19 +169,28 @@ public class MessageDescriptor implements MavlinkDescriptor{
 			if ("char".equals(type)) {
 				sb.append("\tprivate String ").append(smallHumpName).append(";\n\n");
 			} else {
-				sb.append("\tprivate ").append(type).append(" ").append(smallHumpName).append(";\n\n");
+				if (isArray){
+					sb.append("\tprivate ").append(type).append("[] ").append(smallHumpName).append(" = new "+type+"["+arrayLength+"]").append(";\n\n");
+				} else {
+					sb.append("\tprivate ").append(type).append(" ").append(smallHumpName).append(";\n\n");
+				}
 			}
 		});
 		sb.append("\tprivate final int messagePayloadLength = ").append(messageLength).append(";\n\n").append("\tprivate byte[] messagePayload = new byte[messagePayloadLength];\n").append("\n");
 		sb.append("\tpublic ").append(className).append("(");
 		params.forEach((key, value) -> {
 			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
+			boolean isArray = (boolean) paramMap.get("isArray");
 			Object type = paramMap.get("type");
 			Object smallHumpName = paramMap.get("smallHumpName");
 			if ("char".equals(type)) {
 				sb.append("String ").append(smallHumpName).append(", ");
 			} else {
-				sb.append(type).append(" ").append(smallHumpName).append(", ");
+				if (isArray){
+					sb.append(type).append("[] ").append(smallHumpName).append(", ");
+				} else {
+					sb.append(type).append(" ").append(smallHumpName).append(", ");
+				}
 			}
 		});
 		sb.delete(sb.lastIndexOf(", "), sb.lastIndexOf(", ") + 2);
@@ -198,7 +218,8 @@ public class MessageDescriptor implements MavlinkDescriptor{
 		index.set(0);
 		params.forEach((key, value) -> {
 			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
-			int length = (int) paramMap.get("length");
+			int streamLength = (int) paramMap.get("streamLength");
+			boolean isArray = (boolean) paramMap.get("isArray");
 			Object arrayLength = paramMap.get("arrayLength");
 			Object smallHumpName = paramMap.get("smallHumpName");
 			String mavlinkType = paramMap.get("mavlinkType").toString();
@@ -216,18 +237,58 @@ public class MessageDescriptor implements MavlinkDescriptor{
 				mavlinkType = "getChars";
 			}
 			if ("getChars".equals(mavlinkType)) {
-				sb.append("\t\tthis.").append(smallHumpName).append(" = byteArray.")
+				sb.append("\t\t").append(smallHumpName).append(" = byteArray.")
 						.append(mavlinkType).append("(").append(index).append(",").append(arrayLength).append(");\n");
 			} else {
-				sb.append("\t\tthis.").append(smallHumpName).append(" = byteArray.")
-						.append(mavlinkType).append("(").append(index).append(");\n");
+				if (isArray){
+					sb.append("\t\t").append(smallHumpName).append(" = byteArray.")
+							.append(mavlinkType).append("Array(").append(index).append(",").append(arrayLength).append(");\n");
+				} else {
+					sb.append("\t\t").append(smallHumpName).append(" = byteArray.")
+							.append(mavlinkType).append("(").append(index).append(");\n");
+				}
 			}
-			index.set(index.get() + length);
+			index.set(index.get() + streamLength);
 		});
 		sb.append("\t}\n")
 				.append("\n\t@Override\n")
 				.append("\tpublic byte[] messagePayload() {\n")
-				.append("\t\treturn messagePayload;\n")
+				.append("\t\tByteArray byteArray = new ByteArray(messagePayload);\n");
+		index.set(0);
+		params.forEach((key, value) -> {
+			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
+			boolean isArray = (boolean) paramMap.get("isArray");
+			int streamLength = (int) paramMap.get("streamLength");
+			Object smallHumpName = paramMap.get("smallHumpName");
+			String mavlinkType = paramMap.get("mavlinkType").toString();
+			if (mavlinkType.startsWith("int")) {
+				mavlinkType = mavlinkType.substring(0, mavlinkType.indexOf("_"));
+				mavlinkType = "putInt" + mavlinkType.substring(3);
+			} else if (mavlinkType.startsWith("uint")) {
+				mavlinkType = mavlinkType.substring(0, mavlinkType.indexOf("_"));
+				mavlinkType = "putUnsignedInt" + mavlinkType.substring(4);
+			} else if ("float".equals(mavlinkType)) {
+				mavlinkType = "putFloat";
+			} else if ("double".equals(mavlinkType)) {
+				mavlinkType = "putDouble";
+			} else if ("char".equals(mavlinkType)) {
+				mavlinkType = "putChars";
+			}
+			if ("putChars".equals(mavlinkType)) {
+				sb.append("\t\tbyteArray.").append(mavlinkType).append("(")
+						.append(smallHumpName+",").append(index).append(");\n");
+			} else {
+				if (isArray){
+					sb.append("\t\tbyteArray.").append(mavlinkType).append("Array(")
+							.append(smallHumpName+",").append(index).append(");\n");
+				} else {
+					sb.append("\t\tbyteArray.").append(mavlinkType).append("(")
+							.append(smallHumpName+",").append(index).append(");\n");
+				}
+			}
+			index.set(index.get() + streamLength);
+		});
+		sb.append("\t\treturn messagePayload;\n")
 				.append("\t}\n")
 				.append("\t\n\t@Override\n")
 				.append("\tpublic String hexStringPayload() {\n")
@@ -236,11 +297,14 @@ public class MessageDescriptor implements MavlinkDescriptor{
 				.append("\n");
 		params.forEach((key, value) -> {
 			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
+			boolean isArray = (boolean) paramMap.get("isArray");
 			Object smallHumpName = paramMap.get("smallHumpName");
 			Object bigHumpName = paramMap.get("bigHumpName");
 			Object type = paramMap.get("type");
 			if ("char".equals(type)) {
 				type = "String";
+			}else if (isArray){
+				type = type + "[]";
 			}
 			sb.append("\tpublic final ")
 					.append(className)
@@ -297,11 +361,19 @@ public class MessageDescriptor implements MavlinkDescriptor{
 		params.forEach((key, value) -> {
 			HashMap<String, Object> paramMap = (HashMap<String, Object>) value;
 			Object smallHumpName = paramMap.get("smallHumpName");
+			Object type = paramMap.get("type");
+			boolean isArray = (boolean) paramMap.get("isArray");
 			int paramIndex = index.incrementAndGet();
+			String stringValue = (String) smallHumpName;
+			if (isArray){
+				if (!"char".equals(type)) {
+					stringValue= "Arrays.toString("+smallHumpName+")";
+				}
+			}
 			if (paramIndex == 1) {
-				sb.append("\t\t\t\t\"").append(smallHumpName).append("=\" + ").append(smallHumpName).append(" +\n");
+				sb.append("\t\t\t\t\"").append(smallHumpName).append("=\" + ").append(stringValue).append(" +\n");
 			} else {
-				sb.append("\t\t\t\t\", ").append(smallHumpName).append("=\" + ").append(smallHumpName).append(" +\n");
+				sb.append("\t\t\t\t\", ").append(smallHumpName).append("=\" + ").append(stringValue).append(" +\n");
 			}
 		});
 		sb.append("\t\t\t\t'}';\n" +

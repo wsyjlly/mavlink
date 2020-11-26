@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.wsyjlly</groupId>
     <artifactId>mavlink</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
     <name>mavlink</name>
     <description>mavlink protocol description</description>
@@ -60,8 +60,12 @@
             <id>sonatype-nexus-staging</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+        <!--<repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/wsyjlly/mavlink</url>
+        </repository>-->
     </distributionManagement>
-
     <build>
         <plugins>
             <plugin>

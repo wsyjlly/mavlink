@@ -7,18 +7,9 @@ package cn.wsyjlly.mavlink.common;
  **********************************/
 
 public interface Message {
-	/**
-	 * 设置载荷信息
-	 */
+
 	void messagePayload(byte[] messagePayload);
-
-	/**
-	 * 获取载荷信息
-	 */
 	byte[] messagePayload();
-
-	/**
-	 * 返回载荷十六进制字符串
-	 */
 	String hexStringPayload();
+
 }

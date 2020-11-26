@@ -8,9 +8,6 @@ package cn.wsyjlly.mavlink.protocol.util;
 
 public class ByteModel {
 
-	/**
-	 * 十进制字符串转二进制字节数组
-	 */
 	public static byte[] hexStringToBytes(String hex) {
 		if (hex.length() < 1) {
 			return null;
@@ -26,9 +23,6 @@ public class ByteModel {
 		}
 	}
 
-	/**
-	 * 十六进制字节间隔为空格字符串转二进制字节数组
-	 */
 	public static byte[] hexBlankStringToBytes(String hex) {
 		hex = hex.trim();
 		if (hex.length() < 1) {
@@ -45,9 +39,6 @@ public class ByteModel {
 		}
 	}
 
-	/**
-	 * 二进制字节数组转十六进制字符串
-	 */
 	public static String bytes2HexString(byte[] b) {
 		StringBuilder ret = new StringBuilder();
 		for (byte value : b) {

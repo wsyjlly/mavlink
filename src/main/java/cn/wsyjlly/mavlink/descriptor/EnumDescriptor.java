@@ -20,7 +20,7 @@ import java.util.*;
  **********************************/
 
 public class EnumDescriptor implements MavlinkDescriptor{
-	private static final Logger log = Logger.getLogger(FileGenerator.class);
+	private static final Logger log = Logger.getLogger(EnumDescriptor.class);
 
 	@Override
 	public void descriptor(String srcFile, String targetFolder) {
@@ -73,14 +73,13 @@ public class EnumDescriptor implements MavlinkDescriptor{
 		if (Objects.nonNull(description)){
 			description = description.replaceAll("\"", "'");
 		}
-		description = description.replaceAll("\"", "'");
 		Object bitmask = enumMap.get("bitmask");
 		HashMap<String, HashMap<String, Object>> valuesMap = (HashMap<String, HashMap<String, Object>>) enumMap.get("valuesMap");
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd - hh:mm");
 		File file = new File(targetFolder+"\\"+className+".java");
 		sb.append("package ").append(packageName).append(";\n\n");
-		sb.append("import cn.swyan.mavlink.annotation.MavlinkEnum;\n" + "import cn.swyan.mavlink.annotation.MavlinkEnumEntry;\n" + "\n" + "/**********************************\n" + " * Author YSW\n" + " * Description\n" + " * Date ").append(format.format(new Date())).append("\n").append(" *\n").append(" **********************************/\n").append("\n");
+		sb.append("import cn.wsyjlly.mavlink.annotation.MavlinkEnum;\n" + "import cn.wsyjlly.mavlink.annotation.MavlinkEnumEntry;\n" + "\n" + "/**********************************\n" + " * Author YSW\n" + " * Description\n" + " * Date ").append(format.format(new Date())).append("\n").append(" *\n").append(" **********************************/\n").append("\n");
 		sb.append("@MavlinkEnum(name = \"").append(name).append("\"");
 		if (Objects.nonNull(bitmask)){
 			sb.append(", bitmask = \"").append(bitmask).append("\"");
